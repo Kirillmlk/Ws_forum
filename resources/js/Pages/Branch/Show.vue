@@ -47,7 +47,7 @@
                 <h3 class="text-xl">Темы</h3>
             </div>
             <div v-for="theme in branch.themes" class="flex items-center">
-                <Link :href="route('branches.show', theme.id)"
+                <Link :href="route('themes.show', theme.id)"
                       class="block flex items-center bg-white p-4 border border-gray-300 w-full ">
                     <div class="mr-4">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
