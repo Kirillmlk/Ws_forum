@@ -3,8 +3,27 @@
         <div class="flex items-center mb-4">
             <h3 class="text-xl mr-4">{{ theme.title }}</h3>
         </div>
-        <div>
+        <div v-if="theme.messages.length">
+            <div v-for="message in theme.messages" class="flex bg-white p-4 border border-gray-300">
+                <div class="p-4 w-1/6 border-r border-gray-300">
+                    <div class="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-2">
 
+                    </div>
+                    <div>
+                        <h3 class="text-center">
+                            {{ message.user.name }}
+                        </h3>
+                    </div>
+                </div>
+                <div class="p-4 w-5/6">
+                    <div class="mb-2">
+                        <p class="text-sm">{{ message.time }}</p>
+                    </div>
+                    <div>
+                        <p v-html="message.content"></p>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="bg-white border-gray-300 border p-4">
             <div class="mb-4">
@@ -50,7 +69,6 @@ export default {
               content: this.$refs.editor.innerHTML,
               theme_id: this.theme.id,
           }).then( res => {
-              console.log(res);
               this.$refs.editor.innerHTML = ''
           })
       }
