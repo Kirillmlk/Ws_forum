@@ -42,5 +42,5 @@ class UserController extends Controller
 
         return UserResource::make(auth()->user())->resolve();
     }
-
+//Test commit
 }
