@@ -9,6 +9,8 @@ class Message extends Model
 {
     use HasFactory;
     protected $guarded = false;
+    protected $withCount = ['likedUsers'];
+
 
     public function getIsLikedAttribute()
     {
