@@ -26,6 +26,12 @@
                         </div>
                         <div class="flex items-center justify-end">
                             <div class="flex items-center">
+
+                                <div class="mr-4">
+                                    <a @click.prevent="quote(message.content)" href="#"
+                                       class="text-sm rounded-lg bg-sky-600 border border-sky-700 inline-block py-2 px-3 text-center text-white">Цитировать</a>
+                                </div>
+
                                 <span class="mr-2">
                                     {{ message.likes }}
                                 </span>
@@ -49,9 +55,7 @@
                 <h3 class="text-xl mr-4">Добавить сообщение</h3>
             </div>
             <div class="mb-4">
-                <div ref="editor" class="w-full border border-gray-300 p-2" contenteditable="true">
-
-                </div>
+                <div ref="editor" class="w-full border border-gray-300 p-2" contenteditable="true"></div>
             </div>
             <div>
                 <a @click.prevent="store"
@@ -64,7 +68,7 @@
 
 <script>
 import MainLayout from "@/Layouts/MainLayout.vue";
-import {Link} from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
 import axios from "axios";
 
 export default {
@@ -89,22 +93,39 @@ export default {
                 theme_id: this.theme.id,
             }).then(res => {
                 this.$refs.editor.innerHTML = ''
+                this.theme.messages.push(res.data)
             })
         },
 
         toggleLike(message) {
-            axios.post(`/messages/${message.id}/likes`,)
+            axios.post(`/messages/${message.id}/likes`)
                 .then(res => {
                     message.is_liked ? message.likes-- : message.likes++
                     message.is_liked = !message.is_liked
                 })
-        }
+        },
+        quote(content) {
+
+            if (window.getSelection().toString()) {
+                content = window.getSelection().toString()
+            }
+            const editor = this.$refs.editor
+            const oldText = editor.innerHTML
+            editor.innerHTML = `${oldText}<blockquote>${content}</blockquote><br>`
+        },
+
     },
 
     layout: MainLayout
 }
 </script>
 
-<style scoped>
-
+<style>
+blockquote {
+    display: block;
+    padding-left: 6px;
+    padding: 4px;
+    border-left: 4px solid #a0aec0;
+    background-color: #f6f6f6;
+}
 </style>
