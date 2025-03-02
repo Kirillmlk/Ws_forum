@@ -32,9 +32,15 @@
                                        class="text-sm rounded-lg bg-sky-600 border border-sky-700 inline-block py-2 px-3 text-center text-white">Цитировать</a>
                                 </div>
 
+                                <div class="mr-4">
+                                    <a @click.prevent="answer(message)" href="#"
+                                       class="text-sm rounded-lg bg-indigo-600 border border-indigo-700 inline-block py-2 px-3 text-center text-white">Ответить</a>
+                                </div>
+
                                 <span class="mr-2">
                                     {{ message.likes }}
                                 </span>
+
                                 <a @click.prevent="toggleLike(message)" href="#">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          stroke-width="1.5"
@@ -68,7 +74,7 @@
 
 <script>
 import MainLayout from "@/Layouts/MainLayout.vue";
-import { Link } from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
 import axios from "axios";
 
 export default {
@@ -112,6 +118,14 @@ export default {
             const editor = this.$refs.editor
             const oldText = editor.innerHTML
             editor.innerHTML = `${oldText}<blockquote>${content}</blockquote><br>`
+        },
+
+        answer(message) {
+            const title = `<div class="w-full bg-gray-200 border border-gray-300 p-2">Ответ пользователю @${message.user.id} ${message.user.name} ${message.time}</div>`
+
+            const editor = this.$refs.editor
+            const oldText = editor.innerHTML
+            editor.innerHTML = `${oldText} ${title}<blockquote>${message.content}</blockquote><br>`
         },
 
     },
