@@ -31,4 +31,9 @@ class Message extends Model
     {
         return $this->belongsToMany(User::class, 'message_user_answers', 'message_id', 'user_id',);
     }
+
+    public function complaintedUsers()
+    {
+        return $this->belongsToMany(User::class, 'complaints', 'message_id', 'user_id',);
+    }
 }

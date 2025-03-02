@@ -24,8 +24,13 @@
                         <div class="mb-4">
                             <p v-html="message.content"></p>
                         </div>
-                        <div class="flex items-center justify-end">
+                        <div class="mb-4 w-full flex items-center justify-end">
                             <div class="flex items-center">
+
+                                <div class="mr-4">
+                                    <a @click.prevent="openComplaint(message)" href="#"
+                                       class="text-sm rounded-lg bg-whitr border border-red-800 inline-block py-2 px-3 text-center text-red-800">Пожаловаться</a>
+                                </div>
 
                                 <div class="mr-4">
                                     <a @click.prevent="quote(message.content)" href="#"
@@ -51,6 +56,10 @@
                                     </svg>
                                 </a>
                             </div>
+                        </div>
+                        <div class="flex" v-if="message.is_complaint">
+                            <input v-model="message.body" class="p-2 w-5/6 rounded-r-none rounded-lg border border-gray-300 w-full" type="text" placeholder="Ваша жалоба">
+                            <a @click.prevent="complaint(message)" class="block w-1/6 rounded-l-none text-center bg-red-800 text-white p-2 rounded-lg" href="#">Отправить</a>
                         </div>
                     </div>
                 </div>
@@ -128,6 +137,19 @@ export default {
             editor.innerHTML = `${oldText} ${title}<blockquote>${message.content}</blockquote><br>`
         },
 
+        openComplaint(message) {
+            message.body = ''
+            message.is_complaint = !message.is_complaint
+        },
+
+        complaint(message) {
+            axios.post(`/messages/${message.id}/complaints`, {
+                body: message.body,
+                theme_id: this.theme.id,
+            }).then(res => {
+                message.body = ''
+            })
+        },
     },
 
     layout: MainLayout
