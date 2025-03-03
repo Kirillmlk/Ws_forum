@@ -21,6 +21,9 @@
                         <p class="text-sm">{{ message.time }}</p>
                     </div>
                     <div>
+                        <div class="mb-4" v-if="message.is_not_solved_complaint">
+                            <p class="w-full bg-red-100 border border-red-500 p-2">Ваша жалоба в рассмотрении</p>
+                        </div>
                         <div class="mb-4">
                             <p v-html="message.content"></p>
                         </div>
@@ -58,8 +61,12 @@
                             </div>
                         </div>
                         <div class="flex" v-if="message.is_complaint">
-                            <input v-model="message.body" class="p-2 w-5/6 rounded-r-none rounded-lg border border-gray-300 w-full" type="text" placeholder="Ваша жалоба">
-                            <a @click.prevent="complaint(message)" class="block w-1/6 rounded-l-none text-center bg-red-800 text-white p-2 rounded-lg" href="#">Отправить</a>
+                            <input v-model="message.body"
+                                   class="p-2 w-5/6 rounded-r-none rounded-lg border border-gray-300 w-full" type="text"
+                                   placeholder="Ваша жалоба">
+                            <a @click.prevent="complaint(message)"
+                               class="block w-1/6 rounded-l-none text-center bg-red-800 text-white p-2 rounded-lg"
+                               href="#">Отправить</a>
                         </div>
                     </div>
                 </div>
@@ -147,7 +154,7 @@ export default {
                 body: message.body,
                 theme_id: this.theme.id,
             }).then(res => {
-                message.body = ''
+                message.is_not_solved_complaint = res.data.is_not_solved_complaint
             })
         },
     },
