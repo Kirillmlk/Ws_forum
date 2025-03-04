@@ -91,8 +91,7 @@
             </div>
             <div>
                 <a @click.prevent="store"
-                   class="block w-1/4 p-2 bg-sky-600 text-white text-center border border-sky-700"
-                   href="#">Опубликовать</a>
+                   class="block w-1/4 p-2 bg-sky-600 text-white text-center border  border-sky-700" href="#">Опубликовать</a>
             </div>
         </div>
     </div>
@@ -175,7 +174,7 @@ export default {
 
             axios.post('/images', formData)
                 .then(res => {
-                    const image = `<img src="${res.data.url}"/>`
+                    const image = `<span hidden="">img_id=${res.data.id}</span> <img src="${res.data.url}"/>`
                     const editor = this.$refs.editor
                     const oldText = editor.innerHTML
                     editor.innerHTML = `${oldText}<br>${image}<br>`

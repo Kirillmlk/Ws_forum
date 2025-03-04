@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Message\StoreRequest;
 use App\Http\Requests\Message\UpdateRequest;
 use App\Http\Resources\Message\MessageResource;
+use App\Models\Image;
 use App\Models\Message;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 
@@ -41,7 +43,24 @@ class MessageController extends Controller
             }
         );
 
+        $imageIds = Str::of($data['content'])->matchAll('/image_id=[\d]+/')->unique()->transform(
+            function ($id) {
+                return Str::of($id)->replaceMatches('/image_id=/', '')->value();
+            }
+        );
+
         $message = Message::create($data);
+
+        Image::whereIn('id', $imageIds)->update([
+            'message_id' => $message->id,
+        ]);
+
+        Image::where('user_id', auth()->id())->whereNull('message_id')->get()->pluck('puth')->each(function ($path) {
+            Storage::disk('public')->delete($path);
+        });
+
+        Image::where('user_id', auth()->id())->whereNull('message_id')->delete();
+
         $message->answeredUsers()->attach($ids);
         $message->loadCount('likedUsers');
 
