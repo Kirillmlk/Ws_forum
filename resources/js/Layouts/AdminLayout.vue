@@ -6,12 +6,20 @@
                 <Link :href="route('users.personal')">Личный кабинет</Link>
             </div>
         </div>
-        <div class="flex w-1/2 mx-auto py-4">
-            <div class="w-1/4 bg-white p-4 mr-4 border border-gray-300">
-                <h3 class="text-xl mr-4">Меню</h3>
+        <div class="flex items-start w-1/2 mx-auto py-4">
+            <div class="w-1/4 bg-white mr-4 border border-gray-300">
+                <h3 class="text-xl mr-4 p-4">Меню</h3>
+                <div>
+                    <div>
+                        <Link class="p-4 block w-full border-t border-b border-gray-300" :href="route('admin.main.index')">Статистика</Link>
+                    </div>
+                    <div>
+                        <Link class="p-4 block w-full border-t border-b border-gray-300" :href="route('admin.complaints.index')">Жалобы</Link>
+                    </div>
+                </div>
             </div>
             <div class="w-3/4 bg-white p-4 border border-gray-300">
-                <slot />
+                <slot/>
             </div>
         </div>
     </div>
@@ -19,6 +27,7 @@
 
 <script>
 import {Link} from "@inertiajs/vue3";
+
 export default {
     name: "AdminLayout",
 
