@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/roles', [RoleController::class, 'index'])->name('admin.roles.index');
     Route::get('/admin/roles/create', [RoleController::class, 'create'])->name('admin.roles.create');
     Route::post('/admin/roles', [RoleController::class, 'store'])->name('admin.roles.store');
+    Route::get('/admin/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -22,6 +22,10 @@
                     <div>
                         <Link class="p-4 block w-full border-t border-b border-gray-300" :href="route('admin.roles.index')">Роли</Link>
                     </div>
+
+                    <div>
+                        <Link class="p-4 block w-full border-t border-b border-gray-300" :href="route('admin.users.index')">Пользователь</Link>
+                    </div>
                 </div>
             </div>
             <div class="w-3/4 bg-white p-4 border border-gray-300">
