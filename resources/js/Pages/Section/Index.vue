@@ -2,25 +2,25 @@
     <div>
         <div class="flex items-center mb-8">
             <h3 class="text-xl mr-4">Разделы</h3>
-            <Link :href="route('sections.create')"
-                  class="block mr-4 w-1/6 px-2 py-1 bg-white border border-gray-300 rounded-lg text-center">Добавить
-                Раздел
-            </Link>
-            <Link :href="route('branches.create')"
-                  class="block w-1/6 px-2 py-1 bg-white border border-gray-300 rounded-lg text-center">Добавить Ветку
-            </Link>
+            <template v-if="checkGlobalAuth()">
+                <Link :href="route('sections.create')"
+                      class="block mr-4 w-1/6 px-2 py-1 bg-white border border-gray-300 rounded-lg text-center">Добавить
+                    Раздел
+                </Link>
+            </template>
+            <template v-if="sections.filter(section => checkGlobalAuth(section)).length">
+                <Link :href="route('branches.create')"
+                      class="block w-1/6 px-2 py-1 bg-white border border-gray-300 rounded-lg text-center">Добавить
+                    Ветку
+                </Link>
+            </template>
         </div>
         <div v-if="sections">
             <div v-for="section in sections" class="mb-8">
                 <div v-if="section.branches.length">
                     <div class="mb-4 flex items-center">
                         <h3 class="text-lg mr-4">{{ section.title }}</h3>
-                        <template v-if="this.$page.props.auth.roles.some(code => {
-                            return [
-                                `editor`,
-                                `editor.${section.id}`,
-                            ].includes(code)
-                        })">
+                        <template v-if="checkSectionAuth(section)">
                             <Link :href="route('sections.edit', section.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5"
@@ -50,13 +50,7 @@
                               class="block bg-white p-4 border border-gray-300 w-full">
                             <h3>{{ branch.title }}</h3>
                         </Link>
-                        <template v-if="this.$page.props.auth.roles.some(code => {
-                            return [
-                                `editor`,
-                                `editor.${section.id}`,
-                                `editor.${section.id}.${branch.id}`,
-                            ].includes(code)
-                        })">
+                        <template v-if="checkBranchAuth(section, branch)">
                             <Link :href="route('branches.edit', branch.id)" class="mr-4 block bg-sky-600 p-4">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5"
@@ -94,6 +88,35 @@ export default {
 
     components: {
         Link,
+    },
+
+    methods: {
+        checkGlobalAuth(section) {
+            return this.$page.props.auth.roles.some(code => {
+                return [
+                    `editor`,
+                ].includes(code)
+            })
+        },
+
+        checkSectionAuth(section) {
+            return this.$page.props.auth.roles.some(code => {
+                return [
+                    `editor`,
+                    `editor.${section.id}`,
+                ].includes(code)
+            })
+        },
+
+        checkBranchAuth(section, branch) {
+            return this.$page.props.auth.roles.some(code => {
+                return [
+                    `editor`,
+                    `editor.${section.id}`,
+                    `editor.${section.id}.${branch.id}`,
+                ].includes(code)
+            })
+        }
     },
 
     layout: MainLayout
