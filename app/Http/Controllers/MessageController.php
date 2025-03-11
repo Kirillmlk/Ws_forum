@@ -7,7 +7,9 @@ use App\Http\Requests\Message\UpdateRequest;
 use App\Http\Resources\Message\MessageResource;
 use App\Models\Image;
 use App\Models\Message;
+use App\Models\Notification;
 use App\Models\User;
+use App\Service\NotificationService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -103,7 +105,12 @@ class MessageController extends Controller
 
     public function toggleLike(Message $message)
     {
-        $message->likedUsers()->toggle(auth()->id());
+        $res = $message->likedUsers()->toggle(auth()->id());
+
+        if ($res['attached']) {
+           NotificationService::store($message);
+        }
+
     }
 
     public function storeComplaint(\App\Http\Requests\Complaint\StoreRequest $request, Message $message)
