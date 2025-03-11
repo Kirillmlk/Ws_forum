@@ -56,6 +56,8 @@ class BranchController extends Controller
      */
     public function edit(Branch $branch)
     {
+        $this->authorize('update', $branch);
+
         $sections = Section::all();
         $sections = SectionResource::collection($sections)->resolve();
 
@@ -69,6 +71,8 @@ class BranchController extends Controller
      */
     public function update(UpdateRequest $request, Branch $branch)
     {
+        $this->authorize('update', $branch);
+
         $data = $request->validated();
         $branch->update($data);
 
@@ -80,6 +84,8 @@ class BranchController extends Controller
      */
     public function destroy(Branch $branch)
     {
+        $this->authorize('delete', $branch);
+
         $branch->delete();
 
         return redirect()->route('sections.index');

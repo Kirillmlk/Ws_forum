@@ -30,6 +30,8 @@ class SectionController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Section::class);
+
         return inertia('Section/Create');
     }
 
@@ -38,6 +40,8 @@ class SectionController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        $this->authorize('create', Section::class);
+
         $data = $request->validated();
         Section::firstOrCreate($data);
 
