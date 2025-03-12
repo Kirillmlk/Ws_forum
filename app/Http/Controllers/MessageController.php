@@ -66,6 +66,11 @@ class MessageController extends Controller
         Image::where('user_id', auth()->id())->whereNull('message_id')->delete();
 
         $message->answeredUsers()->attach($ids);
+
+        $ids->each(function ($id) use ($message) {
+           NotificationService::store($message, $id, 'Вам ответили');
+        });
+
         $message->loadCount('likedUsers');
 
         return MessageResource::make($message)->resolve();
@@ -108,7 +113,7 @@ class MessageController extends Controller
         $res = $message->likedUsers()->toggle(auth()->id());
 
         if ($res['attached']) {
-           NotificationService::store($message);
+           NotificationService::store($message, null, 'Вам поставили лайк');
         }
 
     }
@@ -116,8 +121,9 @@ class MessageController extends Controller
     public function storeComplaint(\App\Http\Requests\Complaint\StoreRequest $request, Message $message)
     {
         $data = $request->validated();
-
         $message->complaintedUsers()->attach(auth()->id(), $data);
+
+        NotificationService::store($message, null, 'На вас пожаловались');
 
         return MessageResource::make($message)->resolve();
     }
