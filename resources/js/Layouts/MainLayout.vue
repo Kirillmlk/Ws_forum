@@ -28,6 +28,13 @@ import {Link} from "@inertiajs/vue3";
 export default {
     name: "MainLayout",
 
+    created() {
+      window.Echo.channel('test-chanel')
+          .listen('.test', res => {
+              console.log(res);
+           })
+    },
+
     components: {Link},
 }
 </script>

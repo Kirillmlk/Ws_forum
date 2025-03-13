@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\TestEvent;
 use App\Http\Controllers\Admin\ComplaintController;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\RoleController;
@@ -55,6 +56,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('users/personal', [UserController::class, 'personal'])->name('users.personal');
     Route::patch('users/personal', [UserController::class, 'update'])->name('users.personal');
+
+
+    Route::get('/test', function () {
+       event(new TestEvent());
+    });
+
 
     Route::post('/images', [ImageController::class, 'store']);
 
