@@ -57,13 +57,9 @@ Route::middleware('auth')->group(function () {
     Route::get('users/personal', [UserController::class, 'personal'])->name('users.personal');
     Route::patch('users/personal', [UserController::class, 'update'])->name('users.personal');
 
-
-    Route::get('/test', function () {
-       event(new TestEvent());
-    });
-
-
     Route::post('/images', [ImageController::class, 'store']);
+
+    Route::patch('/notifications/update_collection', [\App\Http\Controllers\NotificationController::class, 'updateCollection']);
 
     Route::get('/admin', [MainController::class, 'index'])->name('admin.main.index');
     Route::get('/admin/complaints', [ComplaintController::class, 'index'])->name('admin.complaints.index');
