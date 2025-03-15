@@ -8,14 +8,20 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+//    public function updateCollection(UpdateCollectionRequest $request)
+//    {
+//
+//        $data = $request->validated();
+//
+//        Notification::whereIn('id', $data['ids'])->update([
+//            'is_read' => true,
+//        ]);
+//
+//        return response()->json(['count' => auth()->user()->notifications()->count()], 200);
+//    }
+
     public function updateCollection(UpdateCollectionRequest $request)
     {
-        $data = $request->validated();
-
-        Notification::whereIn('id', $data['ids'])->update([
-            'is_read' => true,
-        ]);
-
-        return response()->json(['count' => auth()->user()->notifications()->count()], 200);
+        dd($request->all()); // Посмотрим, что реально приходит в запросе
     }
 }

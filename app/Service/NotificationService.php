@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Events\StoreNotificationEvent;
 use App\Models\Notification;
 
 class NotificationService
@@ -10,10 +11,12 @@ class NotificationService
     {
         $id = $id ? $id : $message->user_id;
 
-        Notification::created([
+        $notification = Notification::create([
             'title' => $title,
             'user_id' => $id,
             'url' => route('themes.show', $message->theme_id) . '#' . $message->id
         ]);
+
+        event(new StoreNotificationEvent($notification));
     }
 }

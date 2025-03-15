@@ -68,7 +68,7 @@ class MessageController extends Controller
         $message->answeredUsers()->attach($ids);
 
         $ids->each(function ($id) use ($message) {
-           NotificationService::store($message, $id, 'Вам ответили');
+            NotificationService::store($message, $id, 'Вам ответили');
         });
 
         $message->loadCount('likedUsers');
@@ -115,6 +115,14 @@ class MessageController extends Controller
         if ($res['attached']) {
            NotificationService::store($message, null, 'Вам поставили лайк');
         }
+//        if ($res['attached']) {
+//            NotificationService::create([
+//                'title' => "вам поставили лайк",
+//                    'user_id' =>$message->user_id,
+//                    'url' => route('themes.show', $message->theme_id) . '#' . $message->id
+//                ]
+//            );
+//        }
 
     }
 

@@ -1,12 +1,13 @@
 <?php
 
-use App\Events\TestEvent;
+use App\Events\StoreNotificationEvent;
 use App\Http\Controllers\Admin\ComplaintController;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\ThemeController;
@@ -59,7 +60,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/images', [ImageController::class, 'store']);
 
-    Route::patch('/notifications/update_collection', [\App\Http\Controllers\NotificationController::class, 'updateCollection']);
+    Route::patch('/notifications/update_collection', [NotificationController::class, 'updateCollection']);
 
     Route::get('/admin', [MainController::class, 'index'])->name('admin.main.index');
     Route::get('/admin/complaints', [ComplaintController::class, 'index'])->name('admin.complaints.index');
