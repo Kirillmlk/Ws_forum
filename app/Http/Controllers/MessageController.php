@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StoreLikeEvent;
 use App\Events\StoreMessageEvent;
 use App\Http\Requests\Message\StoreRequest;
 use App\Http\Requests\Message\UpdateRequest;
@@ -118,6 +119,9 @@ class MessageController extends Controller
         if ($res['attached']) {
            NotificationService::store($message, null, 'Вам поставили лайк');
         }
+
+        broadcast(new StoreLikeEvent($message))->toOthers();
+
 //        if ($res['attached']) {
 //            NotificationService::create([
 //                'title' => "вам поставили лайк",
