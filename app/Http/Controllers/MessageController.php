@@ -7,6 +7,7 @@ use App\Events\StoreMessageEvent;
 use App\Http\Requests\Message\StoreRequest;
 use App\Http\Requests\Message\UpdateRequest;
 use App\Http\Resources\Message\MessageResource;
+use App\Jobs\ProcessMessageJob;
 use App\Models\Image;
 use App\Models\Message;
 use App\Models\Notification;
@@ -42,25 +43,9 @@ class MessageController extends Controller
         $data = $request->validated();
         $data['user_id'] = auth()->id();
 
-        $ids = User::getCleanedUserId($data);
-
-        $imageIds = getId($data, '/image_id=[\d]+/', '/image_id=/');
-
         $message = Message::create($data);
 
-        broadcast(new StoreMessageEvent($message))->toOthers();
-
-        Image::UpdateMessageId($imageIds, $message);
-
-        Image::CleanFromStorage();
-
-        Image::CleanFromTable();
-
-        $message->answeredUsers()->attach($ids);
-
-        $ids->each(function ($id) use ($message) {
-            NotificationService::store($message, $id, 'Вам ответили');
-        });
+        ProcessMessageJob::dispatch($message, $data);
 
         $message->loadCount('likedUsers');
 

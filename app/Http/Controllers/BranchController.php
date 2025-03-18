@@ -25,8 +25,7 @@ class BranchController extends Controller
      */
     public function create()
     {
-        $sections = Section::all();
-        $sections = SectionResource::collection($sections)->resolve();
+        $sections = SectionResource::collection(Section::all())->resolve();
         return inertia('Branch/Create', compact('sections'));
     }
 
@@ -58,8 +57,7 @@ class BranchController extends Controller
     {
         $this->authorize('update', $branch);
 
-        $sections = Section::all();
-        $sections = SectionResource::collection($sections)->resolve();
+        $sections = SectionResource::collection(Section::all())->resolve();
 
         $branch = BranchResource::make($branch)->resolve();
 
