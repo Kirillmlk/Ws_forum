@@ -19,7 +19,7 @@ class MessageResource extends JsonResource
             'id' => $this->id,
             'content' => $this->content,
             'theme_id' => $this->theme_id,
-            'is_liked' => $this->isLiked,
+            'is_liked' => $this->is_liked,
             'likes' => $this->liked_users_count,
             'is_not_solved_complaint' => $this->is_not_solved_complaint,
             'user' => UserResource::make($this->user)->resolve(),

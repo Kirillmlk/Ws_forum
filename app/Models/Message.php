@@ -12,15 +12,15 @@ class Message extends Model
     protected $withCount = ['likedUsers'];
 
 
-    public function getIsLikedAttribute()
-    {
-        return $this->likedUsers()->where('user_id', auth()->id())->exists();
-    }
+//    public function getIsLikedAttribute()
+//    {
+//        return $this->likedUsers()->where('user_id', auth()->id())->exists();
+//    }
 
-    public function getIsNotSolvedComplaintAttribute()
-    {
-        return $this->complaintedUsers()->where('user_id', auth()->id())->where('is_solved', false)->exists();
-    }
+//    public function getIsNotSolvedComplaintAttribute()
+//    {
+//        return $this->complaintedUsers()->where('user_id', auth()->id())->where('is_solved', false)->exists();
+//    }
 
     public function user()
     {

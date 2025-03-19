@@ -112,6 +112,8 @@ class MessageController extends Controller
 
         NotificationService::store($message, null, 'На вас пожаловались');
 
+        $message->is_not_solved_complaint = true;
+
         return MessageResource::make($message)->resolve();
     }
 }
